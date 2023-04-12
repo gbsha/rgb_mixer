@@ -8,10 +8,10 @@
 module top #(parameter MAX_BW = 5,
              parameter MAX_VAL = 5'b1_1111, 
              parameter MAX_CNT = 8'h31)(
-	input  CLK,
-	input  BTN_N, BTN1, P1B7, P1B8,
+    input  CLK,
+    input  BTN_N, BTN1, P1B7, P1B8,
     output P1B1, P1B2, P1B3,
-	output P1A1, P1A2, P1A3, P1A4, P1A7, P1A8, P1A9, P1A10, 
+    output P1A1, P1A2, P1A3, P1A4, P1A7, P1A8, P1A9, P1A10, 
     output LED5, LED3, LED4
 );
     // Clock divider
@@ -23,11 +23,11 @@ module top #(parameter MAX_BW = 5,
     end
 
     reg ON_red = 1;
-	reg ON_green = 1;
-	reg ON_blue = 1;
-	assign P1B1 = ON_red;
-	assign P1B2 = ON_green;
-	assign P1B3 = ON_blue;
+    reg ON_green = 1;
+    reg ON_blue = 1;
+    assign P1B1 = ON_red;
+    assign P1B2 = ON_green;
+    assign P1B3 = ON_blue;
 
     // Pulse width modulation (PWM) of LEDs
     // in CLKBANK[SLOW:FAST], SLOW should be chosen such that the human eye cannot detect.
@@ -35,10 +35,10 @@ module top #(parameter MAX_BW = 5,
     // LEDs are active-low, so:
     // value = 0 ==> ON = 1 ==> LED is off
     always @(posedge CLKBANK[16 - MAX_BW + 1]) begin
-		ON_red = CLKBANK[16:16 - MAX_BW + 1] >= value_red;
-		ON_green = CLKBANK[16:16 - MAX_BW + 1] >= value_green;
-		ON_blue = CLKBANK[16:16 - MAX_BW + 1] >= value_blue;
-	end
+        ON_red = CLKBANK[16:16 - MAX_BW + 1] >= value_red;
+        ON_green = CLKBANK[16:16 - MAX_BW + 1] >= value_green;
+        ON_blue = CLKBANK[16:16 - MAX_BW + 1] >= value_blue;
+    end
     
     // Color selector BTN1.
     // LED5, 3, 4 indicate which color is selected.
@@ -62,30 +62,30 @@ module top #(parameter MAX_BW = 5,
     // increment and decrement are high for 1 clock cycle of the clock
     // provided to rot_decoder, so the logic that consumes increment and decrement
     // should use the same clock.
-	wire A = P1B7;
-	wire B = P1B8;
-	wire A_debounced;
-	wire B_debounced;
+    wire A = P1B7;
+    wire B = P1B8;
+    wire A_debounced;
+    wire B_debounced;
     wire increment;
     wire decrement;
 
-	debouncer debounce_A(
-		.CLK(CLKBANK[10]),
-		.signal_in(A),
-		.signal_out(A_debounced)
-	);
+    debouncer debounce_A(
+        .CLK(CLKBANK[10]),
+        .signal_in(A),
+        .signal_out(A_debounced)
+    );
 
-	debouncer debounce_B(
-		.CLK(CLKBANK[10]),
-		.signal_in(B),
-		.signal_out(B_debounced)
-	);
+    debouncer debounce_B(
+        .CLK(CLKBANK[10]),
+        .signal_in(B),
+        .signal_out(B_debounced)
+    );
 
     rotary_decoder rot_decoder(
         .CLK(CLKBANK[10]),
-	    .A(A_debounced),
+        .A(A_debounced),
         .B(B_debounced),
-	    .increment(increment),
+        .increment(increment),
         .decrement(decrement),
     );
 
@@ -93,15 +93,15 @@ module top #(parameter MAX_BW = 5,
     // The display shows two decimal digits. To avoid multiplication and division,
     // the values to be displayed are incremented and decremented in specific 8 bit
     // binary coded decimal (bcd) counters 
-	reg [7:0] display_value_red = 0;
+    reg [7:0] display_value_red = 0;
     wire [7:0] display_value_red_inc;
     wire [7:0] display_value_red_dec;
 
-	reg [7:0] display_value_green = 0;
+    reg [7:0] display_value_green = 0;
     wire [7:0] display_value_green_inc;
     wire [7:0] display_value_green_dec;
 
-	reg [7:0] display_value_blue = 0;
+    reg [7:0] display_value_blue = 0;
     wire [7:0] display_value_blue_inc;
     wire [7:0] display_value_blue_dec;
 
@@ -124,15 +124,15 @@ module top #(parameter MAX_BW = 5,
     );
 
     // LED display, Part 2: Driver
-	wire [7:0] seven_segment;
-	assign { P1A10, P1A9, P1A8, P1A7, P1A4, P1A3, P1A2, P1A1 } = seven_segment;
-	reg [7:0] display_value = 0;
+    wire [7:0] seven_segment;
+    assign { P1A10, P1A9, P1A8, P1A7, P1A4, P1A3, P1A2, P1A1 } = seven_segment;
+    reg [7:0] display_value = 0;
 
-	seven_seg_ctrl seven_segment_ctrl (
-		.CLK(CLK),
-		.din(display_value[7:0]),
-		.dout(seven_segment)
-	);
+    seven_seg_ctrl seven_segment_ctrl (
+        .CLK(CLK),
+        .din(display_value[7:0]),
+        .dout(seven_segment)
+    );
 
 
     // RGB Mixer
@@ -140,9 +140,9 @@ module top #(parameter MAX_BW = 5,
     // - consumes increment, decrement signals
     // - updates PWM levels
     // - updates LED display values
-	reg [MAX_BW - 1:0] value_red = 0;
-	reg [MAX_BW - 1:0] value_green = 0;
-	reg [MAX_BW - 1:0] value_blue = 0;
+    reg [MAX_BW - 1:0] value_red = 0;
+    reg [MAX_BW - 1:0] value_green = 0;
+    reg [MAX_BW - 1:0] value_blue = 0;
 
     always @(posedge CLKBANK[10]) begin
         case (color_selector)
