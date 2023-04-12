@@ -1,7 +1,8 @@
 # RGB Mixer
 
+An RGB Mixer implemented in Verilog to be run on an FPGA for adjusting the three color strengths of an RGB LED. The RGB Mixer is a digital design project in the [Zero to Asic Course](https://zerotoasiccourse.com/).
 
-# Ingredients
+# Hardware
 
 * [iCEBreaker FPGA](https://1bitsquared.com/products/icebreaker)
 * [7 segment display PMOD](https://1bitsquared.de/products/pmod-7-segment-display)
@@ -27,7 +28,7 @@ TODO
 * rotary encoder signals require pullup resistors.
 * RGB LED requires resistor in series.
 
-# Compile
+# Testin on FPGA
 
 ## `test_led_display`
 
