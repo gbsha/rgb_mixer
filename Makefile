@@ -1,3 +1,4 @@
+# From https://github.com/icebreaker-fpga/icebreaker-workshop
 PROJ = rgb_mixer
 
 all: $(PROJ).rpt $(PROJ).bin

@@ -1,3 +1,4 @@
+// From https://github.com/icebreaker-fpga/icebreaker-workshop
 // Seven segment controller
 // Switches quickly between the two parts of the display
 // to create the illusion of both halves being illuminated
@@ -41,6 +42,7 @@ module seven_seg_ctrl (
 	end
 endmodule
 
+// From https://github.com/icebreaker-fpga/icebreaker-workshop
 // Convert 4bit numbers to 7 segments
 module seven_seg_hex (
 	input [3:0] din,
@@ -51,13 +53,11 @@ module seven_seg_hex (
 			4'h0: dout = 7'b 0111111;
 			4'h1: dout = 7'b 0000110;
 			4'h2: dout = 7'b 1011011;
-			// 4'h3: dout = FIXME;
 			4'h3: dout = 7'b 1001111;
 			4'h4: dout = 7'b 1100110;
 			4'h5: dout = 7'b 1101101;
 			4'h6: dout = 7'b 1111101;
 			4'h7: dout = 7'b 0000111;
-			// 4'h8: dout = FIXME;
 			4'h8: dout = 7'b 1111111;
 			4'h9: dout = 7'b 1101111;
 			4'hA: dout = 7'b 1110111;

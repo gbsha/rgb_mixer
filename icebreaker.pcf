@@ -1,3 +1,4 @@
+# From https://github.com/icebreaker-fpga/icebreaker-workshop
 # 12 MHz clock
 set_io -nowarn CLK        35
 

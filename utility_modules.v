@@ -1,3 +1,5 @@
+// Debouncer for reading input pins as discussed in
+// In the https://zerotoasiccourse.com/ course.
 module debouncer(
 	input CLK,
 	input signal_in,
@@ -19,7 +21,11 @@ end
 endmodule
 
 
-// BCD (Binary Coded Decimal) counter
+// binary coding decimal (BCD) counter.
+// From https://github.com/icebreaker-fpga/icebreaker-workshop
+// Modifications:
+// - saturates at 0 and MAX_CNT
+// - supports increment and decrement
 module bcd8_saturated_counter #(parameter MAX_CNT = 'h99)(
 	input [7:0] value,
 	output reg [7:0] increment,
@@ -45,6 +51,10 @@ module bcd8_saturated_counter #(parameter MAX_CNT = 'h99)(
 endmodule
 
 
+// Rotary decoder for Gray coded signals from rotary encoder.
+// Provides increment and decrement signals at the speed of the provided clock
+// increment detected: increment signal is high for 1 clock cycle.
+// decrement detected: decrement signal is high for 1 clock cycle.
 module rotary_decoder(
 	input CLK,
 	input A, B,
@@ -66,10 +76,6 @@ always @(posedge CLK) begin
 			10'b110100_1011: begin
 				decrement = 1;
 			end
-            // default: begin
-            //     increment = 0;
-            //     decrement = 0;
-            // end
 		endcase
 		AB_old = {A, B};
 	end else begin
